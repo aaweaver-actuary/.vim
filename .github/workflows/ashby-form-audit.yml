@@ -46,3 +46,5 @@ jobs:
                   print("ASHBY_SCHEMA_END", name)
               except Exception as exc:
                   print("ASHBY_SCHEMA_ERROR", name, repr(exc))
+
+          print("ASHBY_AUDIT_COMPLETE")
