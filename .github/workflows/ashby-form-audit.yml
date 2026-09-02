@@ -16,28 +16,17 @@ jobs:
           import json, urllib.request
 
           jobs = {
-              "Rula": ("rula", "ef5c1d7e-799b-45ca-a921-4ff8292c166a"),
-              "Talkiatry": ("talkiatry", "92639031-ee44-4f82-adb5-04ee67b618c9"),
-              "Rundoo": ("rundoo", "ff42e3dd-b242-4bd3-9c09-9d280e73f4f4"),
-              "Vanta": ("vanta", "5ae193f7-0372-4ce2-af34-8679e6543130"),
-              "Sardine": ("sardine", "e6764411-1740-4ce1-8a9a-79ad459082ea"),
-              "TRM Labs": ("trm-labs", "23df8728-7b04-4340-a767-07e8ce3c23dc"),
-              "Deepgram": ("deepgram", "ba60a541-fdf7-44bf-a6bb-0e821f15af54"),
-              "Fieldguide": ("fieldguide", "f4f0aea0-826d-451f-bd17-b04772e221cc"),
-              "TaskRay": ("taskray", "9a60e44d-7bbd-432b-b942-83fa364b16ec"),
-              "WorkOS": ("workos", "5e650527-d8dd-413a-9cfb-d7d68143274b"),
+              "Vanta": ("vanta", "aa7512c2-fb94-4238-bb15-f0063307af53"),
+              "OpenRouter": ("openrouter", "407f71b5-4b1f-4666-91bd-394f3c26f19d"),
+              "Tilt": ("tilthq", "6bcd299e-1c92-42a5-81d7-fa92a76aba6a"),
+              "SentiLink Applied ML Scientist": ("sentilink", "5217d6c6-2140-4956-89c3-640088c29ffe"),
           }
 
           query = '''query ApiJobPosting($organizationHostedJobsPageName: String!, $jobPostingId: String!) { jobPosting(organizationHostedJobsPageName: $organizationHostedJobsPageName, jobPostingId: $jobPostingId) { id title isListed applicationDeadline applicationForm { id formControls { identifier title } sections { title descriptionHtml isHidden fieldEntries { id field isRequired descriptionHtml isHidden } } sourceFormDefinitionId } surveyForms { id formControls { identifier title } sections { title descriptionHtml isHidden fieldEntries { id field isRequired descriptionHtml isHidden } } sourceFormDefinitionId } } }'''
-
           endpoint = "https://jobs.ashbyhq.com/api/non-user-graphql?op=ApiJobPosting"
           for name, (slug, job_id) in jobs.items():
-              body = json.dumps({
-                  "operationName": "ApiJobPosting",
-                  "variables": {"organizationHostedJobsPageName": slug, "jobPostingId": job_id},
-                  "query": query,
-              }).encode()
-              req = urllib.request.Request(endpoint, data=body, headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"})
+              body = json.dumps({"operationName":"ApiJobPosting","variables":{"organizationHostedJobsPageName":slug,"jobPostingId":job_id},"query":query}).encode()
+              req = urllib.request.Request(endpoint, data=body, headers={"Content-Type":"application/json","User-Agent":"Mozilla/5.0"})
               try:
                   with urllib.request.urlopen(req, timeout=30) as resp:
                       result = json.load(resp)
@@ -46,5 +35,4 @@ jobs:
                   print("ASHBY_SCHEMA_END", name)
               except Exception as exc:
                   print("ASHBY_SCHEMA_ERROR", name, repr(exc))
-
           print("ASHBY_AUDIT_COMPLETE")
